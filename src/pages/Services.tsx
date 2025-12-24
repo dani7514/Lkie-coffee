@@ -169,9 +169,6 @@ const Services = () => {
                           </div>
                         ))}
                       </div>
-                      <Button variant="default" className="w-full">
-                        Order Inquiry
-                      </Button>
                     </div>
                   </div>
                 </div>
@@ -229,9 +226,6 @@ const Services = () => {
                   </li>
                 ))}
               </ul>
-              <Button variant="accent" className="w-full mt-6">
-                Request Quote
-              </Button>
             </div>
           </div>
         </div>

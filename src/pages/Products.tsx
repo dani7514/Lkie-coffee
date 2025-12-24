@@ -189,13 +189,10 @@ const Products = () => {
                       </span>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center">
                     <span className="font-serif text-xl font-bold text-primary">
                       From ${product.price}
                     </span>
-                    <Button variant="default" size="sm">
-                      Buy Now
-                    </Button>
                   </div>
                 </div>
               </div>

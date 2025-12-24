@@ -75,13 +75,10 @@ const FeaturedProducts = () => {
                 <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <span className="font-serif text-xl font-bold text-primary">
                     ${product.price}
                   </span>
-                  <Button variant="default" size="sm">
-                    View Details
-                  </Button>
                 </div>
               </div>
             </div>
