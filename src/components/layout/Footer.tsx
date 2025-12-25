@@ -16,7 +16,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-cream/70 text-sm leading-relaxed">
-              Crafting premium coffee experiences since 2010. From our carefully sourced beans to your cup, every sip tells a story of passion and perfection.
+              Crafting premium coffee experiences since 2017. From our carefully sourced beans to your cup, every sip tells a story of passion and perfection.
             </p>
             <div className="flex gap-4">
               <a
