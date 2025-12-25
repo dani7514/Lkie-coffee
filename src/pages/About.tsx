@@ -47,7 +47,7 @@ const About = () => {
               <span className="text-accent">Passion & Craft</span>
             </h1>
             <p className="text-cream/80 text-lg md:text-xl leading-relaxed animate-fade-in-up delay-100">
-              From a small dream to a beloved coffee destination, Aurora Coffee House has been crafting exceptional coffee experiences since 2010.
+              From a small dream to a beloved coffee destination, Lkia Coffee House has been crafting exceptional coffee experiences since 2010.
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ const About = () => {
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  Aurora Coffee House was born from a simple yet powerful vision: to share the world's finest coffee with our community. What started as a small roastery in 2010 has grown into a beloved destination for coffee enthusiasts.
+                  Lkia Coffee House was born from a simple yet powerful vision: to share the world's finest coffee with our community. What started as a small roastery in 2010 has grown into a beloved destination for coffee enthusiasts.
                 </p>
                 <p>
                   Our founder, inspired by travels through Colombia, Ethiopia, and Indonesia, discovered that great coffee is more than just a beverage—it's a craft, a culture, and a connection between people across continents.
@@ -78,7 +78,7 @@ const About = () => {
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
                 <img
                   src={aboutBarista}
-                  alt="Aurora Coffee barista preparing coffee"
+                  alt="Lkia Coffee barista preparing coffee"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -153,7 +153,7 @@ const About = () => {
         <div className="aspect-[21/9] relative overflow-hidden">
           <img
             src={cafeInterior}
-            alt="Aurora Coffee House interior"
+            alt="Lkia Coffee House interior"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 overlay-warm flex items-center justify-center">
@@ -162,7 +162,7 @@ const About = () => {
                 Visit Our Café
               </h2>
               <p className="text-cream/80 text-lg mb-8">
-                Experience the Aurora difference in person. Our doors are always open for coffee lovers.
+                Experience the Lkia difference in person. Our doors are always open for coffee lovers.
               </p>
               <Button variant="hero" size="lg" asChild>
                 <Link to="/contact">

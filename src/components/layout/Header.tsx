@@ -58,7 +58,7 @@ const Header = () => {
               "font-serif text-xl font-semibold transition-colors duration-300",
               isScrolled ? "text-foreground" : "text-cream"
             )}>
-              Aurora Coffee
+              Lkia Coffee
             </span>
           </Link>
 
@@ -79,9 +79,6 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            <Button variant={isScrolled ? "default" : "hero"} size="sm">
-              Order Now
-            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -122,9 +119,6 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            <Button variant="default" className="w-full mt-2">
-              Order Now
-            </Button>
           </div>
         </div>
       </div>

@@ -14,7 +14,6 @@ const Footer = () => {
               <div className="p-2 bg-cream/10 rounded-full transition-all duration-300 group-hover:bg-cream/20">
                 <Coffee className="w-6 h-6 text-cream" />
               </div>
-              <span className="font-serif text-xl font-semibold">Aurora Coffee</span>
             </Link>
             <p className="text-cream/70 text-sm leading-relaxed">
               Crafting premium coffee experiences since 2010. From our carefully sourced beans to your cup, every sip tells a story of passion and perfection.
@@ -97,8 +96,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent" />
-                <a href="mailto:hello@auroracoffee.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
-                  hello@auroracoffee.com
+                <a href="mailto:hello@Lkiacoffee.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
+                  hello@Lkiacoffee.com
                 </a>
               </li>
             </ul>
@@ -109,7 +108,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-cream/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-cream/50 text-sm">
-              © {currentYear} Aurora Coffee House. All rights reserved.
+              © {currentYear} Lkia Coffee House. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a href="#" className="text-cream/50 text-sm hover:text-cream transition-colors">

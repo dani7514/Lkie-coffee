@@ -80,7 +80,7 @@ const Services = () => {
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
                 <img
                   src={cafeInterior}
-                  alt="Aurora Coffee House café interior"
+                  alt="Lkia Coffee House café interior"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -94,7 +94,7 @@ const Services = () => {
                 Cozy Café Services
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Step into Aurora Coffee House and experience the perfect blend of comfort and quality. Our welcoming space is designed for relaxation, productivity, and meaningful conversations over exceptional coffee.
+                Step into Lkia Coffee House and experience the perfect blend of comfort and quality. Our welcoming space is designed for relaxation, productivity, and meaningful conversations over exceptional coffee.
               </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {cafeServices.map((service, index) => (
@@ -133,7 +133,7 @@ const Services = () => {
               Powder Coffee Sales
             </h2>
             <p className="text-muted-foreground text-lg">
-              Bring the Aurora experience home with our signature freshly ground powder coffee. Available in multiple sizes and roast profiles.
+              Bring the Lkia experience home with our signature freshly ground powder coffee. Available in multiple sizes and roast profiles.
             </p>
           </div>
 
