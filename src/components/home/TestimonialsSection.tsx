@@ -5,7 +5,7 @@ const testimonials = [
     id: 1,
     name: 'Sarah Mitchell',
     role: 'Coffee Enthusiast',
-    content: "Lkia Coffee has completely transformed my morning routine. The dark roast powder delivers the perfect bold flavor I've been searching for. Absolutely exceptional quality!",
+    content: "Lkie Coffee has completely transformed my morning routine. The dark roast powder delivers the perfect bold flavor I've been searching for. Absolutely exceptional quality!",
     rating: 5,
   },
   {
@@ -19,7 +19,7 @@ const testimonials = [
     id: 3,
     name: 'Emma Rodriguez',
     role: 'Home Brewer',
-    content: "I've tried countless coffee brands, but Lkia's organic arabica stands out. Fresh, flavorful, and ethically sourced – everything I look for in premium coffee.",
+    content: "I've tried countless coffee brands, but Lkie's organic arabica stands out. Fresh, flavorful, and ethically sourced – everything I look for in premium coffee.",
     rating: 5,
   },
 ];

@@ -31,7 +31,7 @@ const FeaturesSection = () => {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-accent font-medium text-sm uppercase tracking-wider">Why Choose Us</span>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
-            The Lkia Difference
+            The Lkie Difference
           </h2>
           <p className="text-muted-foreground text-lg">
             What sets us apart is our unwavering commitment to quality, sustainability, and creating exceptional coffee experiences.

@@ -96,8 +96,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-accent" />
-                <a href="mailto:hello@Lkiacoffee.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
-                  hello@Lkiacoffee.com
+                <a href="mailto:hello@Lkiecoffee.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
+                  hello@Lkiecoffee.com
                 </a>
               </li>
             </ul>
@@ -108,7 +108,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-cream/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-cream/50 text-sm">
-              © {currentYear} Lkia Coffee House. All rights reserved.
+              © {currentYear} Lkie Coffee House. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a href="#" className="text-cream/50 text-sm hover:text-cream transition-colors">

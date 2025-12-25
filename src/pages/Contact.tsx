@@ -18,7 +18,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email Us',
-    details: ['hello@lkiacoffee.com', 'orders@lkiacoffee.com'],
+    details: ['hello@Lkiecoffee.com', 'orders@Lkiecoffee.com'],
   },
   {
     icon: Clock,
@@ -156,7 +156,7 @@ const Contact = () => {
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-accent mx-auto mb-4" />
                     <p className="text-muted-foreground">
-                      Lkia Coffee Street, Brew District
+                      Lkie Coffee Street, Brew District
                       <br />
                       Melbourne, VIC 3000
                     </p>

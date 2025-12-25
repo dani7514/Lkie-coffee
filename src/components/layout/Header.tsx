@@ -58,7 +58,7 @@ const Header = () => {
               "font-serif text-xl font-semibold transition-colors duration-300",
               isScrolled ? "text-foreground" : "text-cream"
             )}>
-              Lkia Coffee
+              Lkie Coffee
             </span>
           </Link>
 
