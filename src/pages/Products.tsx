@@ -10,100 +10,109 @@ import productFlavored from '@/assets/product-flavored.jpg';
 const products = [
   {
     id: 1,
-    name: 'Classic Dark Roast Powder',
-    description: 'Bold, rich, and full-bodied with notes of dark chocolate and smoky undertones. Perfect for espresso lovers.',
+    name: 'Guji Medium Roast Powder',
+    description: 'Premium single-origin coffee with complex fruity notes, wine-like acidity, and a smooth, balanced finish. Medium roasted to perfection.',
     price: 24.99,
-    category: 'dark',
-    notes: 'Dark Chocolate • Smoky • Bold',
+    origin: 'Guji',
+    roast: 'Medium',
+    notes: 'Fruity • Wine-like • Balanced',
     weights: ['250g', '500g', '1kg'],
-    image: productDarkRoast,
+    image: productMediumRoast,
   },
   {
     id: 2,
-    name: 'Medium Roast Blend',
-    description: 'Perfectly balanced with hints of caramel, toasted nuts, and a smooth, mellow finish.',
+    name: 'Gofa Medium Roast Powder',
+    description: 'Rich and full-bodied with notes of chocolate and caramel. A well-rounded medium roast that delivers exceptional flavor.',
     price: 22.99,
-    category: 'medium',
-    notes: 'Caramel • Nutty • Smooth',
+    origin: 'Gofa',
+    roast: 'Medium',
+    notes: 'Chocolate • Caramel • Rich',
     weights: ['250g', '500g', '1kg'],
     image: productMediumRoast,
   },
   {
     id: 3,
-    name: 'Organic Arabica Powder',
-    description: 'Single-origin certified organic beans with bright acidity, fruity notes, and floral undertones.',
+    name: 'Jimma Medium Roast Powder',
+    description: 'Bright and vibrant with floral notes and citrus undertones. Medium roasted to highlight its natural sweetness and complexity.',
     price: 28.99,
-    category: 'light',
-    notes: 'Fruity • Floral • Bright',
+    origin: 'Jimma',
+    roast: 'Medium',
+    notes: 'Floral • Citrus • Bright',
+    weights: ['250g', '500g', '1kg'],
+    image: productMediumRoast,
+  },
+  {
+    id: 4,
+    name: 'Yrga Chefe Medium Roast Powder',
+    description: 'Elegant and refined with berry notes and a clean finish. Medium roasted to preserve its delicate flavor profile.',
+    price: 26.99,
+    origin: 'Yrga Chefe',
+    roast: 'Medium',
+    notes: 'Berry • Clean • Elegant',
+    weights: ['250g', '500g', '1kg'],
+    image: productMediumRoast,
+  },
+  {
+    id: 5,
+    name: 'Harer Medium Roast Powder',
+    description: 'Bold and aromatic with spicy notes and a distinctive character. Medium roasted to balance intensity with smoothness.',
+    price: 27.99,
+    origin: 'Harer',
+    roast: 'Medium',
+    notes: 'Spicy • Aromatic • Bold',
+    weights: ['250g', '500g', '1kg'],
+    image: productMediumRoast,
+  },
+  {
+    id: 6,
+    name: 'Guji Premium Blend',
+    description: 'A special selection from Guji region with enhanced fruity complexity and exceptional body. Medium roasted.',
+    price: 29.99,
+    origin: 'Guji',
+    roast: 'Medium',
+    notes: 'Complex • Fruity • Premium',
     weights: ['250g', '500g', '1kg'],
     image: productOrganicArabica,
   },
   {
-    id: 4,
-    name: 'Hazelnut Vanilla Blend',
-    description: 'Aromatic and indulgent, infused with natural hazelnut and vanilla flavors for a luxurious experience.',
-    price: 26.99,
-    category: 'flavored',
-    notes: 'Hazelnut • Vanilla • Sweet',
-    weights: ['250g', '500g', '1kg'],
-    image: productFlavored,
-  },
-  {
-    id: 5,
-    name: 'Espresso Supreme',
-    description: 'Intensely rich with a thick crema. Our signature blend for authentic espresso shots.',
-    price: 27.99,
-    category: 'dark',
-    notes: 'Intense • Crema • Robust',
-    weights: ['250g', '500g', '1kg'],
-    image: productDarkRoast,
-  },
-  {
-    id: 6,
-    name: 'Breakfast Blend',
-    description: 'Light and refreshing with citrus notes. The perfect way to start your morning.',
-    price: 21.99,
-    category: 'light',
-    notes: 'Citrus • Light • Refreshing',
-    weights: ['250g', '500g', '1kg'],
-    image: productMediumRoast,
-  },
-  {
     id: 7,
-    name: 'Caramel Mocha',
-    description: 'Sweet caramel meets rich chocolate in this decadent flavored coffee powder.',
-    price: 25.99,
-    category: 'flavored',
-    notes: 'Caramel • Chocolate • Sweet',
+    name: 'Jimma Organic Medium Roast',
+    description: 'Certified organic single-origin from Jimma with bright acidity and floral notes. Medium roasted for optimal flavor.',
+    price: 31.99,
+    origin: 'Jimma',
+    roast: 'Medium',
+    notes: 'Organic • Floral • Bright',
     weights: ['250g', '500g', '1kg'],
-    image: productFlavored,
+    image: productOrganicArabica,
   },
   {
     id: 8,
-    name: 'House Blend',
-    description: 'Our everyday favorite. A well-rounded medium roast that suits any brewing method.',
-    price: 19.99,
-    category: 'medium',
-    notes: 'Balanced • Versatile • Classic',
+    name: 'Yrga Chefe Classic Blend',
+    description: 'A classic representation of Yrga Chefe with balanced acidity and smooth finish. Medium roasted to perfection.',
+    price: 25.99,
+    origin: 'Yrga Chefe',
+    roast: 'Medium',
+    notes: 'Balanced • Smooth • Classic',
     weights: ['250g', '500g', '1kg'],
     image: productMediumRoast,
   },
 ];
 
-const categories = [
-  { id: 'all', name: 'All Products' },
-  { id: 'dark', name: 'Dark Roast' },
-  { id: 'medium', name: 'Medium Roast' },
-  { id: 'light', name: 'Light Roast' },
-  { id: 'flavored', name: 'Flavored' },
+const origins = [
+  { id: 'all', name: 'All Origins' },
+  { id: 'Guji', name: 'Guji' },
+  { id: 'Gofa', name: 'Gofa' },
+  { id: 'Jimma', name: 'Jimma' },
+  { id: 'Yrga Chefe', name: 'Yrga Chefe' },
+  { id: 'Harer', name: 'Harer' },
 ];
 
 const Products = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeOrigin, setActiveOrigin] = useState('all');
 
-  const filteredProducts = activeCategory === 'all'
+  const filteredProducts = activeOrigin === 'all'
     ? products
-    : products.filter(product => product.category === activeCategory);
+    : products.filter(product => product.origin === activeOrigin);
 
   return (
     <Layout>
@@ -136,19 +145,19 @@ const Products = () => {
           <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
             <div className="flex items-center gap-2 text-muted-foreground mr-4">
               <Filter className="w-4 h-4" />
-              <span className="text-sm font-medium">Filter:</span>
+              <span className="text-sm font-medium">Filter by Origin:</span>
             </div>
-            {categories.map((category) => (
+            {origins.map((origin) => (
               <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
+                key={origin.id}
+                onClick={() => setActiveOrigin(origin.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeCategory === category.id
+                  activeOrigin === origin.id
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                 }`}
               >
-                {category.name}
+                {origin.name}
               </button>
             ))}
           </div>
@@ -168,8 +177,11 @@ const Products = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-medium capitalize">
-                    {product.category}
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-medium">
+                    {product.origin}
+                  </div>
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-coffee-dark/80 text-cream rounded-full text-xs font-medium">
+                    {product.roast} Roast
                   </div>
                 </div>
                 <div className="p-6">

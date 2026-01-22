@@ -1,48 +1,106 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import productDarkRoast from '@/assets/product-dark-roast.jpg';
+import { ArrowRight, Filter } from 'lucide-react';
 import productMediumRoast from '@/assets/product-medium-roast.jpg';
 import productOrganicArabica from '@/assets/product-organic-arabica.jpg';
-import productFlavored from '@/assets/product-flavored.jpg';
 
 const products = [
   {
     id: 1,
-    name: 'Classic Dark Roast',
-    description: 'Bold, rich, and full-bodied with notes of dark chocolate and smoky undertones.',
+    name: 'Guji Medium Roast Powder',
+    description: 'Premium single-origin coffee with complex fruity notes, wine-like acidity, and a smooth, balanced finish.',
     price: 24.99,
-    image: productDarkRoast,
+    origin: 'Guji',
+    roast: 'Medium',
+    image: productMediumRoast,
   },
   {
     id: 2,
-    name: 'Medium Roast Blend',
-    description: 'Perfectly balanced with hints of caramel and a smooth, mellow finish.',
+    name: 'Gofa Medium Roast Powder',
+    description: 'Rich and full-bodied with notes of chocolate and caramel. A well-rounded medium roast that delivers exceptional flavor.',
     price: 22.99,
+    origin: 'Gofa',
+    roast: 'Medium',
     image: productMediumRoast,
   },
   {
     id: 3,
-    name: 'Organic Arabica',
-    description: 'Single-origin organic beans with bright acidity and fruity notes.',
+    name: 'Jimma Medium Roast Powder',
+    description: 'Bright and vibrant with floral notes and citrus undertones. Medium roasted to highlight its natural sweetness.',
     price: 28.99,
-    image: productOrganicArabica,
+    origin: 'Jimma',
+    roast: 'Medium',
+    image: productMediumRoast,
   },
   {
     id: 4,
-    name: 'Hazelnut Vanilla',
-    description: 'Aromatic blend infused with natural hazelnut and vanilla flavors.',
+    name: 'Yrga Chefe Medium Roast Powder',
+    description: 'Elegant and refined with berry notes and a clean finish. Medium roasted to preserve its delicate flavor profile.',
     price: 26.99,
-    image: productFlavored,
+    origin: 'Yrga Chefe',
+    roast: 'Medium',
+    image: productOrganicArabica,
+  },
+  {
+    id: 5,
+    name: 'Harer Medium Roast Powder',
+    description: 'Bold and aromatic with spicy notes and a distinctive character. Medium roasted to balance intensity with smoothness.',
+    price: 27.99,
+    origin: 'Harer',
+    roast: 'Medium',
+    image: productMediumRoast,
+  },
+  {
+    id: 6,
+    name: 'Guji Premium Blend',
+    description: 'A special selection from Guji region with enhanced fruity complexity and exceptional body. Medium roasted.',
+    price: 29.99,
+    origin: 'Guji',
+    roast: 'Medium',
+    image: productOrganicArabica,
+  },
+  {
+    id: 7,
+    name: 'Jimma Organic Medium Roast',
+    description: 'Certified organic single-origin from Jimma with bright acidity and floral notes. Medium roasted for optimal flavor.',
+    price: 31.99,
+    origin: 'Jimma',
+    roast: 'Medium',
+    image: productOrganicArabica,
+  },
+  {
+    id: 8,
+    name: 'Yrga Chefe Classic Blend',
+    description: 'A classic representation of Yrga Chefe with balanced acidity and smooth finish. Medium roasted to perfection.',
+    price: 25.99,
+    origin: 'Yrga Chefe',
+    roast: 'Medium',
+    image: productMediumRoast,
   },
 ];
 
+const origins = [
+  { id: 'all', name: 'All Origins' },
+  { id: 'Guji', name: 'Guji' },
+  { id: 'Gofa', name: 'Gofa' },
+  { id: 'Jimma', name: 'Jimma' },
+  { id: 'Yrga Chefe', name: 'Yrga Chefe' },
+  { id: 'Harer', name: 'Harer' },
+];
+
 const FeaturedProducts = () => {
+  const [activeOrigin, setActiveOrigin] = useState('all');
+
+  const filteredProducts = activeOrigin === 'all'
+    ? products.slice(0, 4) // Show first 4 products when "All Origins" is selected
+    : products.filter(product => product.origin === activeOrigin).slice(0, 4);
+
   return (
     <section className="section-padding bg-background">
       <div className="container-custom">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-accent font-medium text-sm uppercase tracking-wider">Our Products</span>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6">
             Featured Powder Coffee
@@ -52,9 +110,30 @@ const FeaturedProducts = () => {
           </p>
         </div>
 
+        {/* Filter Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+          <div className="flex items-center gap-2 text-muted-foreground mr-4">
+            <Filter className="w-4 h-4" />
+            <span className="text-sm font-medium">Filter by Origin:</span>
+          </div>
+          {origins.map((origin) => (
+            <button
+              key={origin.id}
+              onClick={() => setActiveOrigin(origin.id)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                activeOrigin === origin.id
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+            >
+              {origin.name}
+            </button>
+          ))}
+        </div>
+
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <div
               key={product.id}
               className="group bg-card rounded-2xl overflow-hidden shadow-soft transition-all duration-500 hover:shadow-elevated hover:-translate-y-2"
@@ -67,6 +146,12 @@ const FeaturedProducts = () => {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-coffee-dark/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-medium">
+                  {product.origin}
+                </div>
+                <div className="absolute top-4 left-4 px-3 py-1 bg-coffee-dark/80 text-cream rounded-full text-xs font-medium">
+                  {product.roast} Roast
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="font-serif text-lg font-semibold text-foreground mb-2">

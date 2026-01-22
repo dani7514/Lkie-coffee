@@ -3,22 +3,26 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import type React from 'react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { API_URL } from "@/lib/api-config";
 
 const contactInfo = [
   {
     icon: MapPin,
     title: 'Visit Us',
-    details: ['123 Coffee Street, Brew District', 'Melbourne, VIC 3000', 'Australia'],
+    details: ['Goro, Behind Yerer hospital ', 'Addis Ababa, Ethiopia'],
   },
   {
     icon: Phone,
     title: 'Call Us',
-    details: ['+61 3 1234 5678', '+61 4 9876 5432'],
+    details: ['0983039999'],
   },
   {
     icon: Mail,
     title: 'Email Us',
-    details: ['hello@Lkiecoffee.com', 'orders@Lkiecoffee.com'],
+    details: ['tootrade.36b@gmail.com', 'lkiecoffeeww@gmail.com'],
   },
   {
     icon: Clock,
@@ -28,6 +32,90 @@ const contactInfo = [
 ];
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.firstName || !formData.email || !formData.message) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Combine firstName and lastName into name, and include subject in message if provided
+      const fullName = `${formData.firstName}${formData.lastName ? ` ${formData.lastName}` : ""}`.trim();
+      const messageWithSubject = formData.subject 
+        ? `Subject: ${formData.subject}\n\n${formData.message}`
+        : formData.message;
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "contact",
+          name: fullName,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          message: messageWithSubject,
+        }),
+      });
+
+      const responseData = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(responseData.error || `Failed to send (${response.status})`);
+      }
+
+      if (responseData.success) {
+        toast.success("Message sent successfully!");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        throw new Error(responseData.error || "Failed to send");
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      let errorMessage = "Unable to send message. Please try again later.";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        // Handle network errors
+        if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError") || error.message.includes("ECONNREFUSED")) {
+          errorMessage = "Unable to connect to server. Please try again later.";
+        }
+      }
+      
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+  
   return (
     <Layout>
       {/* Hero Section */}
@@ -65,19 +153,25 @@ const Contact = () => {
                 Fill out the form below and we'll get back to you within 24 hours.
               </p>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">First Name</label>
                     <Input
-                      placeholder="John"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      placeholder="Enter your first name"
                       className="h-12 bg-background border-border focus:border-accent"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">Last Name</label>
                     <Input
-                      placeholder="Doe"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      placeholder="Enter your last name"
                       className="h-12 bg-background border-border focus:border-accent"
                     />
                   </div>
@@ -87,7 +181,22 @@ const Contact = () => {
                   <label className="text-sm font-medium text-foreground">Email Address</label>
                   <Input
                     type="email"
-                    placeholder="john@example.com"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter your email address"
+                    className="h-12 bg-background border-border focus:border-accent"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Phone Number</label>
+                  <Input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
                     className="h-12 bg-background border-border focus:border-accent"
                   />
                 </div>
@@ -95,6 +204,9 @@ const Contact = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">Subject</label>
                   <Input
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                     placeholder="How can we help you?"
                     className="h-12 bg-background border-border focus:border-accent"
                   />
@@ -103,15 +215,18 @@ const Contact = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">Message</label>
                   <Textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="Tell us more about your inquiry..."
                     rows={5}
                     className="bg-background border-border focus:border-accent resize-none"
                   />
                 </div>
 
-                <Button variant="default" size="lg" className="w-full">
+                <Button variant="default" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
                   <Send className="w-4 h-4 mr-2" />
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </div>
@@ -156,9 +271,9 @@ const Contact = () => {
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-accent mx-auto mb-4" />
                     <p className="text-muted-foreground">
-                      Lkie Coffee Street, Brew District
+                    Goro, Behind Yerer hospital 
                       <br />
-                      Melbourne, VIC 3000
+                      Addis Ababa, Ethiopia
                     </p>
                   </div>
                 </div>
@@ -182,11 +297,7 @@ const Contact = () => {
             {[
               {
                 q: 'Where do you source your coffee beans?',
-                a: 'We source our beans from premium coffee-growing regions including Colombia, Ethiopia, Brazil, and Indonesia, partnering directly with ethical farms.',
-              },
-              {
-                q: 'Do you sell powder coffee online?',
-                a: 'Yes! You can place orders through our contact form or visit our café. We offer shipping across Australia for all our powder coffee products.',
+                a: 'We source our beans from premium coffee-growing regions including Guji, Gofa, Jimma, Yrga Chefe, Harer, partnering directly with ethical farms.',
               },
               {
                 q: 'Do you offer bulk orders for businesses?',
@@ -194,7 +305,7 @@ const Contact = () => {
               },
               {
                 q: 'Are your products organic?',
-                a: 'We offer certified organic options including our Organic Arabica Powder. Look for the organic label on our product pages.',
+                a: 'We offer certified organic options including our Organic Coffee Powder. Look for the organic label on our product pages.',
               },
             ].map((faq, index) => (
               <div
