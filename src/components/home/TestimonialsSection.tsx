@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Star, Quote, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, Quote, MessageSquare, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,13 +12,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
 
 interface Testimonial {
-  id: number;
+  id: number | string;
   name: string;
   role: string;
   content: string;
   rating: number;
+  created_at?: string;
   date?: string;
 }
 
@@ -51,12 +53,12 @@ const defaultTestimonials: Testimonial[] = [
 
 const ITEMS_PER_PAGE = 6;
 
-const STORAGE_KEY = 'lkie-coffee-testimonials';
-
 const TestimonialsSection = () => {
   const [allTestimonials, setAllTestimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -65,25 +67,85 @@ const TestimonialsSection = () => {
   });
   const [hoveredRating, setHoveredRating] = useState(0);
 
-  // Load testimonials from localStorage on mount
+  // Load testimonials from Supabase on mount
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const userTestimonials = JSON.parse(stored);
-        setAllTestimonials([...defaultTestimonials, ...userTestimonials]);
-      } catch (error) {
-        console.error('Error loading testimonials:', error);
-      }
-    }
+    fetchTestimonials();
+
+    // Set up real-time subscription for new testimonials
+    const channel = supabase
+      .channel('testimonials-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'testimonials',
+        },
+        () => {
+          // Refetch testimonials when a new one is added
+          fetchTestimonials();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
+
+  const fetchTestimonials = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching testimonials:', error);
+        
+        // Check if table doesn't exist
+        if (error.code === 'PGRST205' || error.message?.includes("Could not find the table")) {
+          console.warn('Testimonials table not found. Please run the SQL setup script in Supabase.');
+          // Fallback to default testimonials
+          setAllTestimonials(defaultTestimonials);
+          return;
+        }
+        
+        toast.error('Failed to load testimonials');
+        // Fallback to default testimonials if Supabase fails
+        setAllTestimonials(defaultTestimonials);
+        return;
+      }
+
+      // Transform Supabase data to match our interface
+      const dbTestimonials: Testimonial[] = (data || []).map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        role: item.role || 'Customer',
+        content: item.content,
+        rating: item.rating,
+        date: item.created_at || item.date,
+        created_at: item.created_at,
+      }));
+
+      // Combine default testimonials with database testimonials
+      setAllTestimonials([...defaultTestimonials, ...dbTestimonials]);
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+      toast.error('Failed to load testimonials');
+      setAllTestimonials(defaultTestimonials);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Sort testimonials by date (newest first) and paginate
   const { sortedTestimonials, totalPages, paginatedTestimonials } = useMemo(() => {
     // Sort by date (newest first), with items without dates at the end
     const sorted = [...allTestimonials].sort((a, b) => {
-      const dateA = a.date ? new Date(a.date).getTime() : 0;
-      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      const dateA = a.created_at || a.date ? new Date(a.created_at || a.date || '').getTime() : 0;
+      const dateB = b.created_at || b.date ? new Date(b.created_at || b.date || '').getTime() : 0;
       return dateB - dateA; // Newest first
     });
 
@@ -108,7 +170,7 @@ const TestimonialsSection = () => {
     setFormData({ ...formData, rating });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.name || !formData.content || formData.rating === 0) {
@@ -116,31 +178,64 @@ const TestimonialsSection = () => {
       return;
     }
 
-    const newTestimonial: Testimonial = {
-      id: Date.now(),
-      name: formData.name,
-      role: formData.role || 'Customer',
-      content: formData.content,
-      rating: formData.rating,
-      date: new Date().toISOString(),
-    };
+    setIsSubmitting(true);
 
-    // Get existing user testimonials
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const userTestimonials = stored ? JSON.parse(stored) : [];
-    const updatedTestimonials = [...userTestimonials, newTestimonial];
+    try {
+      // Insert testimonial into Supabase
+      const { data, error } = await supabase
+        .from('testimonials')
+        .insert([
+          {
+            name: formData.name,
+            role: formData.role || 'Customer',
+            content: formData.content,
+            rating: formData.rating,
+          },
+        ])
+        .select()
+        .single();
 
-    // Save to localStorage
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTestimonials));
+      if (error) {
+        console.error('Error submitting testimonial:', error);
+        
+        // Check if table doesn't exist
+        if (error.code === 'PGRST205' || error.message?.includes("Could not find the table")) {
+          toast.error(
+            'Database table not found. Please create the testimonials table in Supabase. Check SUPABASE_SETUP.md for instructions.',
+            { duration: 6000 }
+          );
+          return;
+        }
+        
+        toast.error('Failed to submit feedback. Please try again.');
+        return;
+      }
 
-    // Update state
-    setAllTestimonials([...defaultTestimonials, ...updatedTestimonials]);
-    setCurrentPage(1); // Reset to first page to show newest testimonial
+      // Transform the response to match our interface
+      const newTestimonial: Testimonial = {
+        id: data.id,
+        name: data.name,
+        role: data.role || 'Customer',
+        content: data.content,
+        rating: data.rating,
+        created_at: data.created_at,
+        date: data.created_at,
+      };
 
-    // Reset form
-    setFormData({ name: '', role: '', content: '', rating: 0 });
-    setIsDialogOpen(false);
-    toast.success('Thank you for your feedback! Your testimonial has been added.');
+      // Update state with new testimonial
+      setAllTestimonials((prev) => [newTestimonial, ...prev]);
+      setCurrentPage(1); // Reset to first page to show newest testimonial
+
+      // Reset form
+      setFormData({ name: '', role: '', content: '', rating: 0 });
+      setIsDialogOpen(false);
+      toast.success('Thank you for your feedback! Your testimonial has been added.');
+    } catch (error) {
+      console.error('Error submitting testimonial:', error);
+      toast.error('Failed to submit feedback. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -244,7 +339,16 @@ const TestimonialsSection = () => {
                     >
                       Cancel
                     </Button>
-                    <Button type="submit">Submit Feedback</Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit Feedback'
+                      )}
+                    </Button>
                   </div>
                 </form>
               </DialogContent>
@@ -252,9 +356,18 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 text-accent animate-spin" />
+            <span className="ml-3 text-cream/70">Loading testimonials...</span>
+          </div>
+        )}
+
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {paginatedTestimonials.map((testimonial, index) => (
+        {!isLoading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {paginatedTestimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
               className="bg-cream/5 backdrop-blur-sm rounded-2xl p-8 border border-cream/10 hover:border-cream/20 transition-all duration-300"
@@ -283,9 +396,9 @@ const TestimonialsSection = () => {
                 <p className="text-cream/50 text-sm">
                   {testimonial.role}
                 </p>
-                {testimonial.date && (
+                {(testimonial.created_at || testimonial.date) && (
                   <p className="text-cream/40 text-xs mt-1">
-                    {new Date(testimonial.date).toLocaleDateString('en-US', {
+                    {new Date(testimonial.created_at || testimonial.date || '').toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
@@ -294,8 +407,9 @@ const TestimonialsSection = () => {
                 )}
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Pagination Controls */}
         {totalPages > 1 && (
