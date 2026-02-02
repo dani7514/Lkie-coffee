@@ -84,21 +84,26 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 mt-0.5 text-accent" />
                 <span className="text-cream/70 text-sm">
-                  123 Coffee Street, Brew District<br />
-                  Melbourne, VIC 3000
+                  Goro, Behind Yerer hospital<br />
+                  Addis Ababa, Ethiopia
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-accent" />
-                <a href="tel:+61312345678" className="text-cream/70 text-sm hover:text-cream transition-colors">
-                  +61 3 1234 5678
+                <a href="tel:0983039999" className="text-cream/70 text-sm hover:text-cream transition-colors">
+                  0983039999
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-accent" />
-                <a href="mailto:hello@Lkiecoffee.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
-                  hello@Lkiecoffee.com
-                </a>
+              <li className="flex items-start gap-3">
+                <Mail className="w-5 h-5 mt-0.5 text-accent" />
+                <div className="flex flex-col gap-1">
+                  <a href="mailto:tootrade.36b@gmail.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
+                    tootrade.36b@gmail.com
+                  </a>
+                  <a href="mailto:lkiecoffeeww@gmail.com" className="text-cream/70 text-sm hover:text-cream transition-colors">
+                    lkiecoffeeww@gmail.com
+                  </a>
+                </div>
               </li>
             </ul>
           </div>
